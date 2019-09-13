@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="assets/style.css">
+    <title>Train Scheduler</title>
+</head>
+<body>
+    <div class="jumbotron">
+        <h1 class="display-4">Train Scheduler!</h1>
+    </div>
+<!--TABLE-->
+
+<table class="table table-striped">
+        <thead>
+          <tr>
+            <th scope="col">Train Name</th>
+            <th scope="col">Destination</th>
+            <th scope="col">Frequency</th>
+            <th scope="col">Next Arrival</th>
+            <th scope="col">Minutes Away</th>
+          </tr>
+        </thead>
+        <tbody>
+        </tbody>
+</table>
+    
+<!--FORM-->
+
+    <form>
+        <div class="form-row">
+            <div class="form-group col-md-6">
+            <label for="train-name">Train Name</label>
+            <input type="text" class="form-control" id="train-name" placeholder="Enter train name.">
+            </div>
+            <div class="form-group col-md-6">
+            <label for="destination">Destination</label>
+            <input type="text" class="form-control" id="destination" placeholder="Enter destination.">
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label for="first-train-time">First Train Time HH:mm (military time)</label>
+                <input type="text" class="form-control" id="first-train-time" placeholder="03:00">
+            </div>
+            <div class="form-group col-md-6">
+                <label for="frequency">Frequency (min)</label>
+                <input type="text" class="form-control" id="frequency" placeholder="60">
+            </div>
+            </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+
+    <script src="https://www.gstatic.com/firebasejs/6.6.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/6.6.1/firebase-database.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="assets/app.js"></script>
+</body>
+</html>
