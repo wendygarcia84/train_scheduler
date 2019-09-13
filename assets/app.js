@@ -32,6 +32,8 @@ clockId = setInterval(updateClock, 1000);
 // ===== EVENTS ===== //
 
 $("button").on("click", getUserInput);
+$(document).on("click", ".update", updateElement);
+$(document).on("click", ".remove", removeElement);
 
 database.ref().on("child_added", getChildren);
 
@@ -98,6 +100,7 @@ function populatePage () {
         newRow.append("<td>" + children[i].frequency + "</td>");
         newRow.append("<td>" + nextArrival.format("HH:mm") + "</td>");
         newRow.append("<td>" + minutesAway + "</td>");
+        newRow.append("<button data-number='" + i + "' class='update'" + ">Update</button>" + "<button data-number='" + i + "' class='remove'" + ">Remove</button>");
 
         $("tbody").append(newRow);
     }
@@ -106,4 +109,14 @@ function populatePage () {
 
 function updateClock () {
     $("#display-current-time").text(moment().format("HH:mm:ss"));
+}
+
+function updateElement () {
+    // AUN NO HACE NADA!!!!
+    console.log("update esto");
+}
+
+function removeElement () {
+    // AUN NO HACE NADA!!!!
+    console.log("borra esto");
 }
