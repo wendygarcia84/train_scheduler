@@ -1,3 +1,7 @@
+body {
+    background-image: url(background.png);
+    
+}
 h1, h2 {
     text-align: center;
 }
@@ -5,4 +9,8 @@ h1, h2 {
 form {
     width: 80%;
     margin-left: 10%;
+}
+
+.jumbotron {
+    background: none;
 }
