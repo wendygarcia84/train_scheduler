@@ -8,12 +8,17 @@ var firebaseConfig = {
     appId: "1:428384929564:web:673eb02c913c501c571cd9"
   };
 
-  firebase.initializeApp(firebaseConfig);
+firebase.initializeApp(firebaseConfig);
 
-  var database = firebase.database();
-  var hourFormat = "HH:mm";
+var database = firebase.database();
 
-  $("#display-current-time").text(moment().format("HH:mm:ss"));
+var hourFormat = "HH:mm";
+var children = [];
+var intervalId;
+
+intervalId = setInterval(populatePage, 1000 * 60);
+
+$("#display-current-time").text(moment().format("HH:mm:ss"));
 
 $("button").on("click", function(){
 
@@ -30,18 +35,19 @@ $("button").on("click", function(){
    
 });
 
-database.ref().on("child_added", function(childSnapshot){
+database.ref().on("child_added", getChildren);
+
+function getChildren (childSnapshot){
+
+    children.push(childSnapshot.val());
     var newRow = $("<tr>");
 
     var convertedHour = moment(childSnapshot.val().firstTrainTime, hourFormat);
     var timeLapse = moment().diff(convertedHour, "minutes");
 
-    console.log(timeLapse);
-
     var minutesAway = childSnapshot.val().frequency - timeLapse % childSnapshot.val().frequency;
     var nextArrival = moment().add(minutesAway, "minutes");
 
-    console.log(minutesAway);
 
     // TRAIN NAME - DESTINATION - FREQUENCY - NEXT ARRIVAL - MINUTES AWAY
     newRow.append("<td>" + childSnapshot.val().trainName + "</td>");
@@ -50,5 +56,32 @@ database.ref().on("child_added", function(childSnapshot){
     newRow.append("<td>" + nextArrival.format("HH:mm") + "</td>");
     newRow.append("<td>" + minutesAway + "</td>");
 
-    $("tbody").append(newRow);
-});
+    $("tbody").append(newRow); 
+
+}
+
+function populatePage () {
+
+    $("tbody").empty();
+
+    for (var i=0; i < children.length ; i++) {
+        var newRow = $("<tr>");
+
+        var convertedHour = moment(children[i].firstTrainTime, hourFormat);
+        var timeLapse = moment().diff(convertedHour, "minutes");
+
+        var minutesAway = children[i].frequency - timeLapse % children[i].frequency;
+        var nextArrival = moment().add(minutesAway, "minutes");
+
+
+        // TRAIN NAME - DESTINATION - FREQUENCY - NEXT ARRIVAL - MINUTES AWAY
+        newRow.append("<td>" + children[i].trainName + "</td>");
+        newRow.append("<td>" + children[i].destination + "</td>");
+        newRow.append("<td>" + children[i].frequency + "</td>");
+        newRow.append("<td>" + nextArrival.format("HH:mm") + "</td>");
+        newRow.append("<td>" + minutesAway + "</td>");
+
+        $("tbody").append(newRow);
+    }
+    console.log("Page populated");
+}
