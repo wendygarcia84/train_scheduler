@@ -1,3 +1,5 @@
+// ===== FIREBASE SETUP AND INICIALIZATION ==== //
+
 var firebaseConfig = {
     apiKey: "AIzaSyAUnyii3rEIO_yPIozHbEgodjuBSNlCOGo",
     authDomain: "what-you-like-9c7a9.firebaseapp.com",
@@ -12,15 +14,30 @@ firebase.initializeApp(firebaseConfig);
 
 var database = firebase.database();
 
+// ======= VARIABLES ====== //
+
 var hourFormat = "HH:mm";
 var children = [];
 var intervalId;
-
-intervalId = setInterval(populatePage, 1000 * 60);
+var clockId;
+var childNumber = 0;
 
 $("#display-current-time").text(moment().format("HH:mm:ss"));
 
-$("button").on("click", function(){
+// ==== TIMERS ==== //
+
+intervalId = setInterval(populatePage, 1000 * 60);
+clockId = setInterval(updateClock, 1000);
+
+// ===== EVENTS ===== //
+
+$("button").on("click", getUserInput);
+
+database.ref().on("child_added", getChildren);
+
+// ========= F U N C T I O N S ===================//
+
+function getUserInput () {
 
     event.preventDefault();
 
@@ -33,9 +50,7 @@ $("button").on("click", function(){
 
     database.ref().push(newTrain);
    
-});
-
-database.ref().on("child_added", getChildren);
+}
 
 function getChildren (childSnapshot){
 
@@ -55,8 +70,11 @@ function getChildren (childSnapshot){
     newRow.append("<td>" + childSnapshot.val().frequency + "</td>");
     newRow.append("<td>" + nextArrival.format("HH:mm") + "</td>");
     newRow.append("<td>" + minutesAway + "</td>");
+    newRow.append("<button data-number='" + childNumber + "' class='update'" + ">Update</button>" + "<button data-number='" + childNumber + "' class='remove'" + ">Remove</button>");
 
     $("tbody").append(newRow); 
+
+    childNumber++;
 
 }
 
@@ -84,4 +102,8 @@ function populatePage () {
         $("tbody").append(newRow);
     }
     console.log("Page populated");
+}
+
+function updateClock () {
+    $("#display-current-time").text(moment().format("HH:mm:ss"));
 }
